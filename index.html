@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+    <title>Joe's Hotdog Stand Assignment Extra Credit</title>
+    <style>
+        p {font-size: 18px;}
+    </style>
+</head>
+<body>
+    <script>
+        function showMoney(x)
+        {
+            let numCents = Math.round(x * 100);
+            let dollars = Math.floor(numCents / 100);
+            let cents = numCents % 100;
+            if (cents < 10) {
+                cents = '0' + cents;
+            }
+            return dollars + '.' + cents;
+        }
+
+        /*For if the customer tries to order nothing or a negative amount of food*/
+        function invalidOrder(amounts)
+        {
+            document.write(`
+                <h1>Invalid Order</h1>
+                <p>You tried to order:</p>
+                <p>${amounts.hotdogs} Hotdogs</p>
+                <p>${amounts.fries} Fries</p>
+                <p>${amounts.sodas} Sodas</p>
+                <p><strong>Please try ordering again!</strong></p>
+            `);
+        }
+
+        items = ['hotdogs', 'fries', 'sodas'];
+        prices = {hotdogs: 4.80, fries: 3.95,sodas: 1.99};
+        amounts = {hotdogs: 0, fries: 0, sodas: 0};
+
+        let subTotal = 0;
+        for (let i = 0; i < items.length; i++) {
+            let quant = prompt(`How many ${items[i]} do you want to order?`);
+            quant = parseInt(quant);
+            amounts[items[i]] = quant;
+            subTotal += amounts[items[i]] * prices[items[i]];
+        }
+
+        let discountTotal = 0;
+        if (subTotal >= 25) {
+            discountTotal = subTotal * 0.10;
+            subTotal = subTotal - discountTotal;
+        }
+
+        let tax = subTotal * 0.0625;
+        let finalTotal = subTotal + tax;
+
+        if ((amounts.hotdogs + amounts.fries + amounts.sodas) == 0) {
+            invalidOrder(amounts);
+        } else if(amounts.hotdogs < 0 || amounts.fries < 0 || amounts.sodas < 0) {
+            invalidOrder(amounts);
+        } else {
+            document.write(`
+                <h1>Thanks for ordering from Joe's Hotdog Stand!</h1>
+                <p>Hotdogs: ${amounts.hotdogs} @ $${showMoney(prices.hotdogs)} each: $${showMoney(amounts.hotdogs * prices.hotdogs)}</p>
+                <p>Fries: ${amounts.fries} @ $${showMoney(prices.fries)} each: $${showMoney(amounts.fries * prices.fries)}</p>
+                <p>Sodas: ${amounts.sodas} @ $${showMoney(prices.sodas)} each: $${showMoney(amounts.sodas * prices.sodas)}</p>
+                <p>____________________________</p>
+                <p>Subtotal: $${showMoney(amounts.hotdogs * prices.hotdogs +  amounts.fries * prices.fries + amounts.sodas * prices.sodas)}</p>
+                <p>Discount: -$${showMoney(discountTotal)}</p>
+                <p>Subtotal after discount: $${showMoney(subTotal)}</p>
+                <p>Meals Tax (6.25%): +$${showMoney(tax)}</p>
+                <p>____________________________</p>
+                <p style="font-size: 22px"><strong>Total: $${showMoney(finalTotal)}</strong></p>
+            `);
+        }
+    </script>
+</body>
+</html>
